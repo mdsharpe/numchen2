@@ -1,0 +1,11 @@
+﻿<div class="column">
+    @foreach (var card in Cards)
+    {
+        <Card Number="card"></Card>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public IEnumerable<int> Cards { get; set; }
+}

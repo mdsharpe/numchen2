@@ -1,0 +1,32 @@
+﻿@page "/play"
+
+<div class="board">
+
+    <NextCard Current="NumberProducer.Current"></NextCard>
+
+    <div class="board__columns">
+        @foreach (var col in State.Columns)
+        {
+            <Column Cards="col"></Column>
+        }
+    </div>
+
+    <div class="board__goals">
+        @foreach (var goal in State.Goals)
+        {
+            <Goal Value="goal"></Goal>
+        }
+    </div>
+
+</div>
+
+@code {
+    private static readonly GameConfiguration Config = new GameConfiguration(6, 16);
+    public INumberProducer NumberProducer { get; set; } = new StandaloneNumberProducer(Config);
+    public BoardState State { get; set; } = new BoardState(Config);
+
+    protected override void OnInitialized()
+    {
+        NumberProducer.TryMoveNext();
+    }
+}

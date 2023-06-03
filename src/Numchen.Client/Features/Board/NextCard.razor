@@ -1,0 +1,15 @@
+﻿Next:
+
+@if (Current.HasValue)
+{
+    <Card Number="Current.Value"></Card>
+}
+else
+{
+    @:None
+}
+
+@code {
+    [Parameter]
+    public int? Current { get; set; }
+}

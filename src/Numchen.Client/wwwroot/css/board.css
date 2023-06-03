@@ -1,0 +1,33 @@
+﻿.board {
+    display: flex;
+    flex-direction: column;
+}
+
+.board__columns {
+    display: flex;
+    justify-content: space-around;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    border: 1px solid black;
+}
+
+.card {
+    padding: 1rem;
+    border: 1px solid blue;
+    border-radius: 0.25rem;
+}
+
+.board__goals {
+    display: flex;
+    justify-content: space-around;
+}
+
+.goal {
+    padding: 1rem;
+    border: 1px solid green;
+    border-radius: 0.25rem;
+}
