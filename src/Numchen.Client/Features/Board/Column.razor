@@ -1,11 +1,24 @@
 ﻿<div class="column">
-    @foreach (var card in Cards)
+    @foreach (var card in Cards.Reverse())
     {
         <Card Number="card"></Card>
     }
+
+    <input type="button" onclick="@OnAddHere" />
 </div>
 
 @code {
     [Parameter]
-    public IEnumerable<int> Cards { get; set; }
+    public int Index { get; set; }
+
+    [Parameter]
+    public Stack<int> Cards { get; set; }
+
+    [Parameter]
+    public EventCallback<int> OnAddHereCallback { get; set; }
+
+    private async Task OnAddHere()
+    {
+        await OnAddHereCallback.InvokeAsync(Index);
+    }
 }

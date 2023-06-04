@@ -1,10 +1,10 @@
 ﻿namespace Numchen.Shared
 {
-    public class StandaloneNumberProducer : INumberProducer
+    public class StandaloneGameEngine : IGameEngine
     {
         private readonly Queue<int> _pool;
 
-        public StandaloneNumberProducer(GameConfiguration config)
+        public StandaloneGameEngine(GameConfiguration config)
         {
             var rng = new Random();
 
@@ -13,20 +13,33 @@
                     Enumerable.Range(1, config.StackLength), config.ColumnCount)
                 .SelectMany(o => o)
                 .OrderBy(o => rng.NextDouble()));
+
+            Board = new BoardState(config);
+
+            MoveNext();
         }
 
         public int? Current { get; private set; }
 
-        public bool TryMoveNext()
+        public BoardState Board { get; private set; }
+
+        public Task MoveCurrentToColumn(int columnIndex)
+        {
+            var numberToMove = Current ?? throw new InvalidOperationException();
+            MoveNext();
+            Board.Columns[columnIndex].Push(numberToMove);
+            
+            return Task.CompletedTask;
+        }
+
+        private void MoveNext()
         {
             if (!_pool.TryDequeue(out var next))
             {
                 Current = null;
-                return false;
             }
 
             Current = next;
-            return true;
         }
     }
 }
