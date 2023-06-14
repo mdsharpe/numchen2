@@ -1,4 +1,6 @@
-﻿namespace Numchen.Shared
+﻿using System.Collections.Immutable;
+
+namespace Numchen.Shared
 {
     public class StandaloneGameEngine : IGameEngine
     {
@@ -14,7 +16,11 @@
                 .SelectMany(o => o)
                 .OrderBy(o => rng.NextDouble()));
 
-            Board = new BoardState(config);
+            Board = new BoardState(
+                Columns: Enumerable.Range(0, config.ColumnCount)
+                    .Select<int, IImmutableStack<int>>(i => ImmutableStack<int>.Empty)
+                    .ToImmutableList(),
+                Goals: new int[config.ColumnCount].ToImmutableList());
 
             MoveNext();
         }
@@ -28,7 +34,7 @@
             var numberToMove = Current ?? throw new InvalidOperationException();
             MoveNext();
             Board.Columns[columnIndex].Push(numberToMove);
-            
+
             return Task.CompletedTask;
         }
 

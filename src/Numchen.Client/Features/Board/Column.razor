@@ -1,5 +1,5 @@
 ﻿<div class="column">
-    @foreach (var card in Cards.Reverse())
+    @foreach (var card in Cards)
     {
         <Card Number="card"></Card>
     }
@@ -12,7 +12,7 @@
     public int Index { get; set; }
 
     [Parameter]
-    public Stack<int> Cards { get; set; }
+    public IEnumerable<int> Cards { get; set; }
 
     [Parameter]
     public EventCallback<int> OnAddHereCallback { get; set; }

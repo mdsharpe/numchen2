@@ -1,8 +1,8 @@
 ﻿Next:
 
-@if (Current.HasValue)
+@if (Value.HasValue)
 {
-    <Card Number="Current.Value"></Card>
+    <Card Number="Value.Value"></Card>
 }
 else
 {
@@ -11,5 +11,5 @@ else
 
 @code {
     [Parameter]
-    public int? Current { get; set; }
+    public int? Value { get; set; }
 }

@@ -1,18 +1,21 @@
 ﻿@page "/play"
 
+@implements IDisposable
+@inject GameState State
+
 <div class="board">
 
-    <NextCard Current="_engine.Current"></NextCard>
+    <NextCard Value="State.NextCard"></NextCard>
 
     <div class="board__columns">
-        @foreach (var (col, i) in Board.Columns.Select((o,i) => (o,i)))
+        @foreach (var (col, i) in State.Board.Columns.Select((o, i) => (o, i)))
         {
-            <Column Index="i" Cards="col" OnAddHereCallback="OnColumnAddHere"></Column>
+            <Column Index="i" Cards="col.Reverse()" OnAddHereCallback="@OnColumnAddHere"></Column>
         }
     </div>
 
     <div class="board__goals">
-        @foreach (var goal in Board.Goals)
+        @foreach (var goal in State.Board.Goals)
         {
             <Goal Value="goal"></Goal>
         }
@@ -21,18 +24,20 @@
 </div>
 
 @code {
-    private readonly GameEngineFactory _gameEngineFactory = new GameEngineFactory();
-    private IGameEngine _engine;
-
-    private BoardState Board => _engine.Board;
+    [Parameter]
+    public EventCallback<int> OnMoveCardToColumnCallback { get; set; }
 
     protected override void OnInitialized()
     {
-        _engine = _gameEngineFactory.Create();
+        State.Initialize();
+        State.OnChange += StateHasChanged;
     }
 
-    private void OnColumnAddHere(int columnIndex)
+    void IDisposable.Dispose()
+        => State.OnChange -= StateHasChanged;
+
+    private async Task OnColumnAddHere(int columnIndex)
     {
-        _engine.MoveCurrentToColumn(columnIndex);
+        await OnMoveCardToColumnCallback.InvokeAsync(columnIndex);
     }
 }
