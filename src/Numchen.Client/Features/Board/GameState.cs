@@ -19,9 +19,9 @@ namespace Numchen.Client.Features.Board
 
         public event Action? OnChange;
 
-        public void Initialize()
+        public void Initialize(GameType mode)
         {
-            _engine = _factory.Create();
+            _engine = _factory.Create(mode);
             Board = _engine.Board;
         }
 

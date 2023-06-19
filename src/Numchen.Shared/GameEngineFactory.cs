@@ -4,9 +4,11 @@
     {
         private static readonly GameConfiguration Config = new(6, 16);
 
-        public IGameEngine Create()
-        {
-            return new StandaloneGameEngine(Config);
-        }
+        public IGameEngine Create(GameType mode)
+            => mode switch
+            {
+                GameType.Local => new StandaloneGameEngine(Config),
+                _ => throw new NotSupportedException(),
+            };
     }
 }

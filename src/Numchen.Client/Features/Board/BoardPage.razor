@@ -1,7 +1,8 @@
-﻿@page "/play"
+﻿@page "/play/{GameType}"
 
 @implements IDisposable
 @inject GameState State
+@inject NavigationManager NavigationManager
 
 <div class="board">
 
@@ -25,16 +26,26 @@
 
 @code {
     [Parameter]
+    public string? GameType { get; set; }
+
+    [Parameter]
     public EventCallback<int> OnMoveCardToColumnCallback { get; set; }
 
     protected override void OnInitialized()
     {
-        State.Initialize();
+        if (!Enum.TryParse<GameType>(GameType, ignoreCase: true, out var gameType))
+        {
+            NavigationManager.NavigateTo("/play");
+        }
+
+        State.Initialize(gameType);
         State.OnChange += StateHasChanged;
     }
 
     void IDisposable.Dispose()
-        => State.OnChange -= StateHasChanged;
+    {
+        State.OnChange -= StateHasChanged;
+    }
 
     private async Task OnColumnAddHere(int columnIndex)
     {
