@@ -6,38 +6,43 @@ namespace Numchen.Client.Features.Board
     {
         private readonly GameEngineFactory _factory;
         
-        private IGameEngine _engine;
+        private IGameEngine? _engine;
 
         public GameState(GameEngineFactory gameEngineFactory)
         {
             _factory = gameEngineFactory;
         }
 
-        public int? NextCard { get; private set; }
-
-        public BoardState? Board { get; private set; }
+        public int? NextCard => _engine?.NextCard;
+        public BoardState? Board => _engine?.Board;
 
         public event Action? OnChange;
 
         public void Initialize(GameType mode)
         {
             _engine = _factory.Create(mode);
-            Board = _engine.Board;
         }
 
-        public void MoveCurrentToColumn(int columnIndex)
+        public async Task MoveCurrentToColumn(int columnIndex)
         {
-            if (Board is null)
+            if (_engine is null)
             {
                 throw new InvalidOperationException();
             }
 
-            if (NextCard is null)
+            await _engine.MoveCurrentToColumn(columnIndex);
+
+            NotifyStateHasChanged();
+        }
+
+        public async Task RemoveFromColumn(int columnIndex)
+        {
+            if (_engine is null)
             {
                 throw new InvalidOperationException();
             }
 
-            Board = Board.WithAddCardToColumn(NextCard.Value, columnIndex);
+            await _engine.RemoveFromColumn(columnIndex);
 
             NotifyStateHasChanged();
         }

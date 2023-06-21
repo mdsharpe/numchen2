@@ -11,7 +11,9 @@
     <div class="board__columns">
         @foreach (var (col, i) in State.Board.Columns.Select((o, i) => (o, i)))
         {
-            <Column Index="i" Cards="col.Reverse()" OnAddHereCallback="@OnColumnAddHere"></Column>
+            <Column Index="i" Cards="col.Reverse()"
+                OnAddClickCallback="@OnColumnAddClick"
+                OnRemoveClickCallback="@OnColumnRemoveClick"></Column>
         }
     </div>
 
@@ -28,9 +30,6 @@
     [Parameter]
     public string? GameType { get; set; }
 
-    [Parameter]
-    public EventCallback<int> OnMoveCardToColumnCallback { get; set; }
-
     protected override void OnInitialized()
     {
         if (!Enum.TryParse<GameType>(GameType, ignoreCase: true, out var gameType))
@@ -38,8 +37,8 @@
             NavigationManager.NavigateTo("/play");
         }
 
-        State.Initialize(gameType);
         State.OnChange += StateHasChanged;
+        State.Initialize(gameType);
     }
 
     void IDisposable.Dispose()
@@ -47,8 +46,13 @@
         State.OnChange -= StateHasChanged;
     }
 
-    private async Task OnColumnAddHere(int columnIndex)
+    private async Task OnColumnAddClick(int columnIndex)
     {
-        await OnMoveCardToColumnCallback.InvokeAsync(columnIndex);
+        await State.MoveCurrentToColumn(columnIndex);
+    }
+
+    private async Task OnColumnRemoveClick(int columnIndex)
+    {
+        await State.RemoveFromColumn(columnIndex);
     }
 }

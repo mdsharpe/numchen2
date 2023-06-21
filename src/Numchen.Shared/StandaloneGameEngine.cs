@@ -21,31 +21,30 @@ namespace Numchen.Shared
                     .Select<int, IImmutableStack<int>>(i => ImmutableStack<int>.Empty)
                     .ToImmutableList(),
                 Goals: new int[config.ColumnCount].ToImmutableList());
-
-            MoveNext();
         }
 
-        public int? Current { get; private set; }
+        public int? NextCard => _pool.TryPeek(out var next) ? next : null;
 
         public BoardState Board { get; private set; }
 
         public Task MoveCurrentToColumn(int columnIndex)
         {
-            var numberToMove = Current ?? throw new InvalidOperationException();
+            var numberToMove = NextCard ?? throw new InvalidOperationException();
+
             MoveNext();
-            Board.Columns[columnIndex].Push(numberToMove);
+
+            Board = Board.WithAddCardToColumn(numberToMove, columnIndex);
 
             return Task.CompletedTask;
         }
 
-        private void MoveNext()
+        public Task RemoveFromColumn(int columnIndex)
         {
-            if (!_pool.TryDequeue(out var next))
-            {
-                Current = null;
-            }
+            Board = Board.WithRemoveCardFromColumn(columnIndex);
 
-            Current = next;
+            return Task.CompletedTask;
         }
+
+        private void MoveNext() => _pool.Dequeue();
     }
 }

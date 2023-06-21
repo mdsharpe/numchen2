@@ -4,7 +4,8 @@
         <Card Number="card"></Card>
     }
 
-    <input type="button" onclick="@OnAddHere" />
+    <input type="button" onclick="@OnAddClick" />
+    <input type="button" onclick="@OnRemoveClick" />
 </div>
 
 @code {
@@ -15,10 +16,18 @@
     public IEnumerable<int> Cards { get; set; }
 
     [Parameter]
-    public EventCallback<int> OnAddHereCallback { get; set; }
+    public EventCallback<int> OnAddClickCallback { get; set; }
 
-    private async Task OnAddHere()
+    [Parameter]
+    public EventCallback<int> OnRemoveClickCallback { get; set; }
+
+    private async Task OnAddClick()
     {
-        await OnAddHereCallback.InvokeAsync(Index);
+        await OnAddClickCallback.InvokeAsync(Index);
+    }
+
+    private async Task OnRemoveClick()
+    {
+        await OnRemoveClickCallback.InvokeAsync(Index);
     }
 }

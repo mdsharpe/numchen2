@@ -1,8 +1,7 @@
 ﻿using System.Collections.Immutable;
 
-namespace Numchen.Shared
-{
-    public record BoardState(
-        IImmutableList<IImmutableStack<int>> Columns,
-        IImmutableList<int> Goals);
-}
+namespace Numchen.Shared;
+
+public record BoardState(
+    IImmutableList<IImmutableStack<int>> Columns,
+    IImmutableList<int> Goals);
