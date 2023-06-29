@@ -1,4 +1,8 @@
-﻿/* Board */
+﻿:root {
+    --card-size: 5vw;
+}
+
+/* Board */
 
 .board {
     height: 100%;
@@ -8,28 +12,30 @@
     grid-template-rows: [next-card] min-content [columns] minmax(0, 1fr) [goals] min-content;
 }
 
-.board__columns {
-    display: flex;
-    justify-content: space-around;
-}
-
 /* Next card */
 
 .next-card {
     grid-row: next-card;
+    min-height: var(--card-size);
 }
 
-/* Column */
+.next-card .card {
+    display: inline-block;
+}
+
+/* Columns */
 
 .board__columns {
     grid-row: columns;
+    display: flex;
+    justify-content: space-around;
 }
 
 .column {
+    width: calc(100% / 6);
     display: flex;
     flex-direction: column;
     padding: 1rem;
-    border: 1px solid black;
 }
 
 .column__button {
@@ -42,12 +48,32 @@
     flex-direction: column;
 }
 
+    .column__card-stack .card {
+        flex: 0 1 10%;
+    }
+
 /* Card */
 
 .card {
-    padding: 1rem;
+    position: relative;
+}
+
+.card__background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: var(--card-size);
+    height: var(--card-size);
     border: 1px solid blue;
     border-radius: 0.25rem;
+}
+
+.card__label {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 /* Goals */
