@@ -1,10 +1,11 @@
 ﻿<div class="column">
+    <input type="button" onclick="@OnAddClick" />
+
     @foreach (var card in Cards)
     {
         <Card Number="card"></Card>
     }
 
-    <input type="button" onclick="@OnAddClick" />
     <input type="button" onclick="@OnRemoveClick" />
 </div>
 
