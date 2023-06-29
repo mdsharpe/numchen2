@@ -1,13 +1,15 @@
-﻿Next:
+﻿<div class="next-card">
+    Next:
 
-@if (Value.HasValue)
-{
-    <Card Number="Value.Value"></Card>
-}
-else
-{
-    @:None
-}
+    @if (Value.HasValue)
+    {
+        <Card Number="Value.Value"></Card>
+    }
+    else
+    {
+        @:None
+    }
+</div>
 
 @code {
     [Parameter]

@@ -1,11 +1,28 @@
-﻿.board {
-    display: flex;
-    flex-direction: column;
+﻿/* Board */
+
+.board {
+    height: 100%;
+    max-height: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: [next-card] min-content [columns] minmax(0, 1fr) [goals] min-content;
 }
 
 .board__columns {
     display: flex;
     justify-content: space-around;
+}
+
+/* Next card */
+
+.next-card {
+    grid-row: next-card;
+}
+
+/* Column */
+
+.board__columns {
+    grid-row: columns;
 }
 
 .column {
@@ -15,13 +32,28 @@
     border: 1px solid black;
 }
 
+.column__button {
+    flex: 0 0 auto;
+}
+
+.column__card-stack {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Card */
+
 .card {
     padding: 1rem;
     border: 1px solid blue;
     border-radius: 0.25rem;
 }
 
+/* Goals */
+
 .board__goals {
+    grid-row: goals;
     display: flex;
     justify-content: space-around;
 }

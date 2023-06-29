@@ -1,12 +1,18 @@
 ﻿<div class="column">
-    <input type="button" onclick="@OnAddClick" />
+    <input type="button"
+           class="column__button column__button--add"
+           onclick="@OnAddClick" />
 
-    @foreach (var card in Cards)
-    {
-        <Card Number="card"></Card>
-    }
+    <div class="column__card-stack">
+        @foreach (var card in Cards)
+        {
+            <Card Number="card"></Card>
+        }
+    </div>
 
-    <input type="button" onclick="@OnRemoveClick" />
+    <input type="button"
+           class="column__button column__button--remove"
+           onclick="@OnRemoveClick" />
 </div>
 
 @code {
